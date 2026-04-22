@@ -2,9 +2,9 @@ import axios from 'axios';
 
 
 const api = axios.create({
-    baseURL: 'http://localhost:5000/api',
+    baseURL: 'https://craft-cash.onrender.com/api',
     
-    //'https://expense-tracker-b5mb.onrender.com/api',
+  
 
     withCredentials: true,
 });

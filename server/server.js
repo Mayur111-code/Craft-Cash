@@ -17,8 +17,8 @@ app.use(cookieParser());
 // ----- CORS -----
 app.use(cors({
   origin: [
-    "http://localhost:5173",
-    //"https://expense-tracker-6vs5.vercel.app"
+    "craft-cash.vercel.app",
+   
   ],
   credentials: true,
 }));
