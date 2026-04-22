@@ -20,7 +20,7 @@ function App() {
         <ExpenseProvider>
           <div className="app-container">
             <Suspense fallback={
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', backgroundColor: 'var(--bg-color)', color: 'var(--primary)' }}>
+              <div className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-100">
                 Loading...
               </div>
             }>
@@ -42,7 +42,7 @@ function App() {
         </ExpenseProvider>
       </AuthProvider>
     </Router>
-  );
+  )
 }
 
 export default App;

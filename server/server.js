@@ -16,10 +16,7 @@ app.use(cookieParser());
 
 // ----- CORS -----
 app.use(cors({
-  origin: [
-    "craft-cash.vercel.app",
-   
-  ],
+  origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'],
   credentials: true,
 }));
 
