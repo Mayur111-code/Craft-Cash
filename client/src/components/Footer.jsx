@@ -222,8 +222,8 @@ const Footer = ({ installPrompt, onInstallClick }) => {
                         {/* Contact Info */}
                         <div className="flex items-center gap-2 pt-2">
                             <Mail size={14} className="text-[var(--primary)]" />
-                            <a href="mailto: webcarftservices@gmail.com" className="text-[var(--text-muted)] text-sm hover:text-[var(--primary)] transition-all duration-300">
-                                webcarftservices@gmail.com
+                            <a href="mailto: itserviceswebcraft@gmail.com" className="text-[var(--text-muted)] text-sm hover:text-[var(--primary)] transition-all duration-300">
+                                itserviceswebcraft@gmail.com
                             </a>
                         </div>
                     </motion.div>
