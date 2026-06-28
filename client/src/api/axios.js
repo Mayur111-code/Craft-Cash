@@ -1,67 +1,70 @@
+// import axios from 'axios';
+
+// const api = axios.create({
+//     baseURL:  //"https://craft-cash.onrender.com/api" || 
+//     "http://localhost:5000/api",
+//     withCredentials: true,
+// });
+
+// api.interceptors.request.use((config) => {
+//     const token = localStorage.getItem('token');
+//     if (token) {
+//         config.headers.Authorization = `Bearer ${token}`;
+//     }
+//     return config;
+// });
+
+// export default api;
+
+
 import axios from 'axios';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://craft-cash.onrender.com/api';
+
 const api = axios.create({
-    baseURL:  "https://craft-cash-alpha.vercel.app/api" || "http://localhost:5173",
+    baseURL: API_BASE_URL,
     withCredentials: true,
+    timeout: 10000,
+    headers: {
+        'Content-Type': 'application/json',
+    }
 });
 
-api.interceptors.request.use((config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+// Request interceptor
+api.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
+
+// Response interceptor
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        // Log for debugging
+        if (error.code === 'ERR_NETWORK') {
+            console.error('❌ Network Error - Server not reachable');
+        }
+        
+        // Only redirect on 401 if user was previously authenticated
+        // Don't redirect during initial app load
+        if (error.response?.status === 401) {
+            const token = localStorage.getItem('token');
+            if (token) {
+                // User had a token but it's invalid - clear and redirect
+                localStorage.removeItem('token');
+                window.location.href = '/login';
+            }
+            // If no token, just reject - don't redirect (prevents loop)
+        }
+        
+        return Promise.reject(error);
     }
-    return config;
-});
+);
 
 export default api;
-
-
-// const express = require('express');
-// const mongoose = require('mongoose');
-// const cors = require('cors');
-// const dotenv = require('dotenv');
-// const cookieParser = require('cookie-parser');
-
-// dotenv.config();
-
-// const app = express();
-// const PORT = process.env.PORT || 5000;
-
-// // 🔥 CORS (TOP PE HI HONA CHAHIYE)
-// app.use(cors({
-//   origin: [
-//     "https://craft-cash-alpha.vercel.app", 
-//     "http://localhost:5173" 
-//   ],
-//   credentials: true,
-// }));
-
-// // 🔥 PREFLIGHT FIX (VERY IMPORTANT)
-// app.options('*', cors());
-
-// // ----- BODY PARSERS -----
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
-// app.use(cookieParser());
-
-// // ----- DATABASE -----
-// mongoose.connect(process.env.MONGO_URI)
-//   .then(() => console.log("MongoDB Connected"))
-//   .catch(err => console.log(err));
-
-// // ----- ROUTES -----
-// app.use("/api/auth", require("./routes/auth"));
-// app.use("/api/expenses", require("./routes/expenses"));
-// app.use("/api/ai", require("./routes/ai"));
-
-// app.get("/", (req, res) => {
-//   res.send("API CONNECTED ...");
-// });
-
-// // ----- ERROR HANDLER -----
-// app.use((err, req, res, next) => {
-//   console.error(err);
-//   res.status(500).json({ message: "Server Error" });
-// });
-
-// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
